@@ -1,0 +1,18 @@
+To automate the server configuration we shall use Bash Script, However there will be delay in configuring each and every server.
+
+To automate the server configuration we will make use of tools to reduce the configuring time.
+------------------------------------------------------------
+Server Configuring Tools: CHEF, PUPPET, SALTSTACK, ANSIBLE
+------------------------------------------------------------
+
+ANSIBLE: Ansible is open source server configuring tool owned by redhat. With ansible you can configure Server, Tools, Network. Ansible perform tasks on server simultaneously thereby reducing the configuration time.
+
+Ansible Has following things:
+    Host
+    Inventory
+    Playbooks
+    Core Modules
+    Custom Modules
+    Plugins
+
+

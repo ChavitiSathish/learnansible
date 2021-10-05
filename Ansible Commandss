@@ -1,0 +1,20 @@
+ Ansible Files Stores in
+ -> Config File           = /etc/ansible/ansible.cfg
+ -> Executable Location   = /usr/bin/ansible
+
+How to Install Ansible
+ -> Go to https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html#installing-ansible-on-rhel-centos-or-fedora
+ -> Add Subscription Manager or EPL
+ -> Go to # yum install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+ -> Type sudo yum install ansible
+ -> Check ansible version = ansible --version
+ -> Create User           = useradd ansibleuser
+ -> Create Password       = passwd ansibleuser
+
+Give Sudo Access to User
+ -> Open the sudo File       = vim sudo or visudo
+ -> Edit the User section    = Add user
+ -> Now Switch User          = su - user
+
+
+
