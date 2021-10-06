@@ -24,6 +24,36 @@ How to Access Managed Nodes From Master Node using SSH Keys
  -> Go to .ssh folder             = cd .ssh and ls -lrt
  -> Now copy the key to Node      = ssh-copy-id <ip-address>
 
+How to create Inventory
+ -> Go to ansible directory       = cd /etc/ansible
+ -> List the Files                = ls -lrt
+ -> Open Hosts file               = vi hosts
+ -> Paste Manage nodes Ip         = <ip-address>
+ -> Test the Nodes from Master    = ansible all -m ping
+
+How to create Custom Inventory file for individual work
+ -> Go to ansible directory         = cd /etc/ansible
+ -> Open ansible configuration file = vi ansible.cfg
+ -> Add Inventory custom location   = <location>
+ -> Add hosts in created inventory  = <ip-address>
+
+How to Check the lIst of Hosts in Inventory
+ -> Create Inventory                = vi /etc/ansible/ansible.cfg
+ -> Add Servers                     = <servernames>
+ -> Create Parent Children Servers  = [India:children]
+                                        ->Server 1
+                                        ->Server 2
+ -> Check the list of servers       = ansible --list-hosts <server group> / all / ungrouped
+ -> Check all servers               = ansible-inventory --graph
+ -> Check all servers in pjct       = ansible-inventory --graph -i inventory
+
+
+
+
+
+
+
+
 
 
 
