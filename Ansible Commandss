@@ -12,9 +12,23 @@ How to Install Ansible
  -> Create Password       = passwd ansibleuser
 
 Give Sudo Access to User
- -> Open the sudo File       = vim sudo or visudo
- -> Edit the User section    = Add user
- -> Now Switch User          = su - user
+ -> Open the sudo File            = vim sudo or visudo
+ -> Edit the User section         = Add user
+ -> Check password Authentication = vi /etc/ssh/sshd_config
+ -> Now restart SSHD              = systemctl sshd restart
+
+How to Access Managed Nodes From Master Node using SSH Keys
+ -> Now Switch User               = su - user
+ -> Generate Key for User         = ssh-keygen
+    -> You will find .ssh extra file on typing ls -la
+ -> Go to .ssh folder             = cd .ssh and ls -lrt
+ -> Now copy the key to Node      = ssh-copy-id <ip-address>
+
+
+
+
+
+
 
 
 
