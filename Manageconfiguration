@@ -1,0 +1,42 @@
+Ansible configuration is managed in ansible.cfg file. It has 2 sections
+        -> Default Section
+        -> Privilage_Escalation
+
+How to access Configuration File?
+ -> Go to Location                   = cd /etc/ansible
+ -> Open Cfg file                    = vi ansible.cfg
+
+What is the default possible inventory?
+ -> #inventory                       = /etc/ansible/hosts
+
+How to Create User based configuration file?
+ -> Login to User                    = su - <user>
+ -> Create Ansible Cfg file          = vi ~/.ansible.cfg
+                -> Insert Inventory  = [defaults]
+
+How to Create specific project based configuration file?
+ -> Go or Create Project Directory   = mkdir <projectname>
+ -> Change to Project Directory      = cd <projectname>
+ -> Create Ansible Cfg file          = vi ansible.cfg
+                -> Insert Inventory  = [defaults]
+
+How to specified location for configuration?
+ -> Run command                      = export ANSIBLE_CONFIG=/tmp/ansible.cfg
+
+Hoe to create Inventory in Ansible?
+[defaults]
+inventory = inventory
+remote_user = <user>
+host_key_checking = false
+deprecation_warning = false
+
+[privilege_escalation]
+become = True
+become_method = sudo
+become_user = root
+become_ask_pass = False
+
+How to list all modules in ansible?
+ -> List of Modules             =  ansible-doc -l
+ -> Count of Modules            =  ansible-doc -l | wc -l
+ -> List Modules of Windows     =  ansible-doc -l | grep ^win_
