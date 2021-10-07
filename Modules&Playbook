@@ -1,0 +1,96 @@
+What are Adhoc Commands?
+Simple commands need not to be defined in playbook they can be defined in single command.
+ -> Syntax: ansible hosts -m <module> [-a 'argument'] [-i 'inventory']
+ -> Example: How to create a User
+        -> ansible all -m user -a "name = INDIA"
+ -> Example: How to check user
+        -> ansible all -m command -a "id INDIA"
+ -> Example: How to Remove user
+         -> ansible all -m command -a 'name=INDIA state=absent'
+
+What are modules?
+What ever the task we run in ansible it should be done using modules.You are allowed to use existing modules and also create custom modules.
+    -> Every Module works with arguments.
+    -> Ansible commands are Idempotent.
+
+How to list all modules in ansible?
+ -> List of Modules             =  ansible-doc -l
+ -> Count of Modules            =  ansible-doc -l | wc -l
+ -> List Modules of Windows     =  ansible-doc -l | grep ^win_
+
+
+What are the essential ansible modules used?
+ -> ansible all -m ping         = Check installation errors
+ -> ansible all -m service      = Checks whether service is running
+      -> Example: ansible all -m service -a "name=sshd state=started"
+ -> ansible all -m commands     = Run all any commands using cmd
+ -> ansible all -m shell        = Run all arbitary commands through shell
+    -> By using shell we can check the managed node content from control node.
+    -> Example: ansible <node> -m shell -a 'cat <destination'
+ -> ansible all -m copy         = COpy files to managed nodes
+    -> By using copy we can copy content to the managed node content from control node.
+    -> Example: ansible <node> -m copy -a 'content="Hi Users" dest=/etc/motd'
+ -> ansible all -m raw          = Runs modules without python
+    -> Example: ansible -u root -i inventory <node> --ask-pass -m raw -a 'yum install python3 -y'
+
+
+What are Playbooks?
+ -> Playbooks has plays that contains tasks. Playbooks are written in YAML.
+ -> And while writing YAML indentation is very important.
+ -> We can run against managed hosts by writing script
+
+How to write playbooks using Yaml ?
+-> We follow ___ 3 step method to write.
+        _name: (Playname)
+         _____
+         tasks:
+         _name1:(task 1)
+          modules:
+            args1:
+            args2:
+          _name2: (task 2)
+            modules:
+               args1:
+               args2:
+
+Example:
+---
+- name: deploy vsftd
+  hosts: ansiblenode1
+  tasks:
+  - name: install vsftpd
+    yum: name=vsftpd
+  - name: enable vsftpd
+    service: name=vsftpd enable=true
+  - name: create readme file
+    copy:
+      content: "Hi subscribers type yaml files instead of copy"
+      dest: /var/ftp/pub/README
+      force: no
+      mode:0444
+---
+
+How to run ansible Playbook?
+ -> Run ansible playbook    = ansible-playbook <filename>
+
+How to verify playbook syntax errors?
+ -> ansible-playbook --syntax-check <filename>
+        -> -c option for dry run
+        -> -v, -vv, -vvv. -vv
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
