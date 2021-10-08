@@ -105,6 +105,50 @@ Example(Dictionary): users['schaviti']['first_name']
 -> In dictionary multivalued variables we cannot use loops etc..
 
 
+How to manage encrypted data in ansible?
+Managing secrets in ansible is possible with ansible vault.
+Whenever there is a requirement of processing sensitive data like passwords, webkeys we need to follow a secure way through ansible vault
+
+Ansible vault is used to encrypt and decrypt the data.
+ -> Command               = ansible-vault
+ -> Create Encrypt file   = ansible-vault create <filename>
+ -> View file             = ansible-vault view <filename>
+ -> Edit file             = ansible-vault edit <filename>
+ -> Encrypt file          = ansible-vault encrypt <filename>
+ -> Decrypt file          = ansible-vault decrypt <filename>
+ -> Change password       = ansible-vault rekey <filename>
+
+ How to create secret vault file?
+ -> Create a Vault file      = ansible-vault create secret.yaml
+ -> Set Password
+ -> Create a Username and Password
+    username: Kishore
+    pwhash: password
+
+How to use vault file?
+-> Firstly create a User creation file.
+ - name: create a user
+   hosts: all
+   vars_files:
+     - secret.yaml
+   tasks:
+     - name: creating user
+       user:
+        name: "{{ username }}"
+        password: "{{ pwhash }}"
+ -> Run the created file
+    -> ansible-playbook --ask-vault-pass <filename>
+It will ask the password before, So to prevent this we shall use below
+ -> Store password
+    -> echo <password> > valut_pass
+ -> Run the created file
+     -> ansible-playbook --vault-password-file=valut_pass <filename>
+
+
+
+
+
+
 
 
 

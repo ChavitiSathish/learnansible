@@ -1,0 +1,51 @@
+Loops are used to iterate the task.
+Example:
+- name: Postfix is Running
+  service:
+    name: Postfix
+    state: started
+- name: Dovelet is Running
+  service:
+    name: Dovelet
+    state: started
+
+How to Check all services running using loops?
+
+- name: Postfix & Dovelet is running
+  service:
+    name: "{{ item }}"
+    state: started
+  loop:
+    - postfix:
+    - dovelet:
+
+How to Check all services running using loops and vars?
+ Vars:
+   mail_services:
+       - postfix
+       - dovelet
+   tasks:
+     - name: Postfix & Dovelet is running
+       service:
+         name: "{{ item }}"
+         state: started
+       loop: "{{mail_services}}"
+
+How to create users using a loop
+- name: create users using a loop
+  hosts: all
+  tasks:
+  - name: create users
+    user:
+      name: "{{ item.name }}"
+      state: present
+      groups: "{{item.groups}}"
+    loop:
+      - name: anna
+        groups: wheel
+      - name: linda
+        groups: users
+      - name: bob
+        groups: users
+
+
