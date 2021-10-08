@@ -1,0 +1,116 @@
+What are the Variables
+Ansible supports the variables that can be used throughout the project. In ansible we use variables mostly to create users, installation of packages, service, archive or retrieve.
+
+How to declare a variable in Ansible?
+Valid variables should starts with letters and should not contain special characters.
+Examples: Web_Server, Remote_file, file_1 etc..
+
+How we use variables in ansible?
+We can use variables in Playbook, inclusion files.
+
+How to define variables ?
+One should define variables on vars block. When variable is given in files it can be used dynamically
+Ex(Playbook): _ hosts: all
+                vars:
+                  web_package: httpd
+
+Ex(files): _ hosts: all
+                vars_files:
+                    vars/users.yml
+
+Always variables are defined in {{}}
+    -> Example: {{web_package: httpd}}
+In condition statements we don't use curly braces {{}}.
+If variable is first element it should be defined in "".
+Example:
+    ->_ name : create a user using variable
+        hosts: all
+        vars:
+          user: lisa
+        tasks:
+          - name: create a user {{ user }}
+            user:
+              name: "{{ user }}"
+
+
+What is the Precedance of Variables?
+ -> Global Scope: Inventory and Command line variable
+ -> Play scope: When Set in Play
+ -> Host Scope: When host variable set in inclusion file
+
+ -> Command line variable has highest precedance over all variables.
+    -> Examplw: ansible-playbook site.yaml -e "web_package=sshd"
+
+What are buitlin varibles?
+There are some builtin vaiables available in ansible which are readily available to use.
+Example: hostnames
+         groups
+         group_names
+
+How to manage host variables?
+Variables can be assigned to host or group of hosts.
+Example Single Host
+    [Servers]
+    ansiblehost 1
+        web_package: httpd
+
+Example Multiple Host
+    [Servers:vars]
+        web_package: httpd
+
+Example Host Files
+    ~/myproject/host_vars/ansiblehosts1
+We can give specific variables to particular host
+
+Example for Groups
+   ~/myproject/group_vars/<webservers>
+        -> Ex: web_package: httpd
+
+Ansible picks up automatically variables from the destination.
+
+
+What are multivalued variables?
+Multivalued variables are used through arrays or dictionaries.
+
+[
+user1_first_name: s
+user1_last_name: chaviti
+user1_home_dir: /users/schaviti
+]
+
+How to define Mutlivalued using Arrays"}
+users:
+  - first_name: s
+    last_name: chaviti
+    home_dir: /users/schaviti
+
+How to define Mutlivalued using Dictionary"}
+users:
+    schaviti:
+        first_name: s
+        last_name: chaviti
+        shell: /bin/bash
+or
+schaviti:{first_name: 's', last_name: 'chaviti', shell: '/bin/bash'}
+
+
+How to access the variable in multivalued variables?
+Example(Arrays) : users.schaviti.first_name
+                  users.schaviti.last_name
+Example(Dictionary): users['schaviti']['first_name']
+                     users['schaviti']['last_name']
+
+
+-> In array specified multivalued variables we can use loops etc..
+-> In dictionary multivalued variables we cannot use loops etc..
+
+
+
+
+
+
+
+
+
+
+
