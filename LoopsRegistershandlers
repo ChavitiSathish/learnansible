@@ -48,4 +48,25 @@ How to create users using a loop
       - name: bob
         groups: users
 
+What are Register Variables?
+Register stores output of command that is executed. You can address the stored register as a variable in conditional loops.
+
+- name: demo how register works
+  hosts: all
+  tasks:
+  - name: show loop register
+    shell: "echo {{ item }}"
+    loop:
+      - "one"
+      - "two"
+    register: echovar
+  - name: show register results
+    debug:
+      var: echovar
+
+
+
+
+
+
 
