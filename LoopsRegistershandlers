@@ -64,6 +64,169 @@ Register stores output of command that is executed. You can address the stored r
     debug:
       var: echovar
 
+When to use When in ansible
+When is used to execue the tasks etc when there is a condition specified.
+- name: When Demo
+  hosts: all
+  vars:
+  supported_distros:
+    - RedHat
+    - Centos
+    - Fedora
+  tasks:
+    - name: Install RH Family Specific Packages
+      yum:
+        name: nginx
+        state: present
+      when: ansible_distribution in supported_distros
+
+-------------------------------------------------------------------
+How to test Multiple Conditions?
+We will use and and or along with when condition.
+
+- name: Using Multiple Conditions
+  hosts: all
+  tasks:
+  - package:
+       name: httpd
+       state: installed
+     when:
+     - ansible_distribution == "RedHat"
+     - ansible_memfree_mb > 1512
+
+- name: Using Multiple Conditions
+  hosts: all
+  tasks:
+  - package:
+       name: httpd
+       state: removed
+     when: >
+      ( ansible_distribution == "RedHat" and
+        ansible_memfree_mb > 512 )
+      or
+      ( ansible_distribution == "RedHat" and
+        ansible_memfree_mb > 1024 )
+
+-----------------------------------------------------------------
+How to use both When and Register at a time?
+
+- name: restart sshd only if crond is running
+  hosts: all
+  tasks:
+    - name: get the crond server status
+      command: /usr/bin/systemctl is-active crond
+      ignore_errors: yes
+      register: result
+    - name: restart sshd based on crond status
+      service:
+        name: sshd
+        state: restarted
+      when: result.rc == 0
+
+-----------------------------------------------------------------
+What are Handlers and How to use them?
+Handlers are something where it should be instructed to do tasks in a particular order. We will use notify statement to trigger the tasks. Typically handlers are used while restart services and reboot hosts. Handlers are run after all the tasks are runned successfully. One task has more than one handler.
+
+Handler runs only for one time unless we make some changes.
+
+- name: Set up WebServer
+  host: all
+  tasks:
+    - name: install httpd
+      yum:
+       name: httpd
+       state: latest
+    - name: copy index.html
+      copy:
+        src: /tmp/index.html
+        dest: /var/www/html/index.html
+      notify:
+        - restart_web
+    - name: copy nothing - intended to fail
+      copy:
+        src: /tmp/nothing
+        dest /var/www/html/nothing.html
+  handlers:
+    - name: restart_web
+      service:
+        name: httpd
+        state: restarted
+
+---------------------------------------------------------------------
+With Force Handler
+
+- name: Set up WebServer
+  host: all
+  force_handler: True
+  tasks:
+    - name: install httpd
+      yum:
+       name: httpd
+       state: latest
+    - name: copy index.html
+      copy:
+        src: /tmp/index.html
+        dest: /var/www/html/index.html
+      notify:
+        - restart_web
+    - name: copy nothing - intended to fail
+      copy:
+        src: /tmp/nothing
+        dest /var/www/html/nothing.html
+  handlers:
+    - name: restart_web
+      service:
+        name: httpd
+        state: restarted
+
+------------------------------------------------------------------------
+What are the Blocks and How to Use?
+Blocks are superset of tasks. Blocks has error handling. When block fails rescue will runs. In blocks we cannot use items such as loops.
+Example
+- name: simple block example
+  hosts: all
+  tasks:
+    - name: setting up http
+      block:
+      - name: installing http
+        yum:
+          name: httpd
+          state: present
+      - name:
+        service:
+          name: httpd
+          state: started
+      when: ansible_distribution == "RedHat"
+
+Example using rescue
+- name: using blocks
+  hosts: all
+  tasks:
+    - name: Intended to be successful
+      block:
+        - name: remove a file
+          shell:
+            cmd: /usr/bin/rm /var/www/html/index.html
+      rescue:
+        - name: create a file
+          shell:
+             cmd: /usr/bin/touch /tmp/rescuefile
+      always:
+        - name: Always write a message to logs
+          shell:
+             cmd: /usr/bin/logger hello
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
