@@ -1,0 +1,7 @@
+Ansible in Realtime
+------------------------------------------------------------
+Inventory Options:
+        All Host names, Server Names, Server ips
+      -> Static Hosts Inventory
+      -> Dynamic Hosts Inventory : Fetches inventory dyanmically
+
