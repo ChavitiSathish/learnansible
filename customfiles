@@ -1,0 +1,65 @@
+What are the file modules to manage files?
+File modules are used to manage the files.
+
+Lineinfile: To change single line
+Blockinfile: To manipulate multiple lines
+Copy: Copy file from local to remote
+Fetch: Used to fetch the file from remote machine to managed node.
+file: Remove or Create files
+
+
+How to create a File?
+- name: Create a File
+  hosts: all
+  tasks:
+   - name: create a file
+     file:
+       path: /tmp/removeme
+       owner: ansible
+       mode: 0640
+       state: touch
+       setype: public_content_rw_t
+
+How to Copy a File?
+- name: Copy a File
+  hosts: all
+  tasks:
+   - name: Copy File Demo
+     copy:
+       src: /etc/hosts
+       dest: /tmp/
+   - name: add some lines to /tmp/hosts
+     blockinfile:
+        path: /tmp/hosts
+        block: |
+           192.168.4.110 host1.example.com
+           192.168.4.120 host2.example.com
+        state: present
+   - name: Verify file Checksum
+     stat:
+       path: /tmp/hosts
+       checksum_alogorithm: md5
+     register: result
+   - debug:
+       msg: "The checksum of /tmp/hosts is {{result.stat.checksum}}"
+   - name: fetch a file
+     fetch:
+       src: /tmp/hosts  (from remote host)
+       dest: /tmp/      (to managed host(Where we are doing operations))
+
+How to use templates in ansible ?
+- name: update /etc/hosts file dynamically
+  hosts: all
+  tasks:
+    - name: update /etc/hosts
+      template:
+         src: templates/hosts.j2
+         dest: /etc/hosts
+
+
+
+
+
+
+
+
