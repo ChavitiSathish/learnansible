@@ -1,0 +1,62 @@
+How to maintain a directory structure?
+
+Step 1: Create a MyProject Directory ~/myproj/
+Step 2: By default you will have ansible.cfg
+Step 3: Create seperate Inventory files according to environments
+               -> inventory-dev
+               -> inventory-prod
+Step 4: Main playbook in project will be as site.yml
+Step 5: In site.yml we can in-built all types of playbooks, roles etc.. It is like master playbook.
+Step 6: We can make us of file.yml as it redirect to roles. We can perform tasks in roles directory
+Step 7: As the project is groiwng try to increase the group vars and host vars.
+Step 8: Maintain best directory structure.
+--------------------------------------------------------
+
+What are the Roles in Ansible?
+Ansible roles and playbooks are very much similar.
+Roles also contains has same code used in playbook.
+Roles are used to reuse the code in playbooks.
+Roles structure
+    -> has defaults - contains default values of roles
+    -> files - contains static files
+    -> handlers- define in main.yml
+    -> meta - has dependencies, author information
+    -> tasks - has info about tasks, roles
+    -> templates - has info about templates
+    -> test - optional has inventory file
+    -> vars - has information about standard variables
+
+Roles Locations
+    -> ./roles                 > highest precedance
+    -> /.ansible/roles
+    -> /etc/ansible/roles
+    ->/etc/share/ansible/roles
+
+Roles Writing
+- name: roles
+  hosts: all
+  roles:
+    - role 1
+    - role 2
+    - var 1
+    - var 2
+
+Roles Example
+We can install roles plugins from galaxy ansible.
+
+If playbook has both the roles and tasks, the weightage is given more roles instead of tasks. First roles then tasks and then handlers.
+If we want to run task before the role we need to define then in pre_tasks.
+- name: run a task before a role
+  hosts: all
+  pre-tasks:
+    - name: update yum cache
+      yum:
+        update_cache: yes
+  roles:
+   - motd
+
+
+
+
+
+
