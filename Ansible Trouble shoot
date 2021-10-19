@@ -1,0 +1,9 @@
+No logging will be there for ansible.
+There will be no log file defined however we can set log path.
+
+How to set log path in ansible?
+In ansible.cfg we can set logpath.
+    -> log_path = tttl.log
+
+
+
